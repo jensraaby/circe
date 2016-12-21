@@ -176,7 +176,7 @@ lazy val circeJvmModules = Seq[Project](
 
 lazy val circeDocsModules = Seq[Project](docs)
 
-lazy val circeUtilModules = Seq[Project](hygiene, benchmark)
+lazy val circeUtilModules = Seq[Project](hygiene)
 
 def jvm8Only(projects: Project*): Set[Project] = sys.props("java.specification.version") match {
   case "1.8" => Set.empty
@@ -417,23 +417,6 @@ lazy val opticsBase = circeCrossModule("optics", mima = previousCirceVersion, Cr
 
 lazy val optics = opticsBase.jvm
 lazy val opticsJS = opticsBase.js
-
-lazy val benchmark = circeModule("benchmark", mima = None)
-  .settings(noPublishSettings)
-  .settings(
-    crossScalaVersions := crossScalaVersions.value.init,
-    libraryDependencies ++= Seq(
-      "com.typesafe.play" %% "play-json" % "2.3.10",
-      "io.argonaut" %% "argonaut" % "6.1",
-      "io.spray" %% "spray-json" % "1.3.2",
-      "io.github.netvl.picopickle" %% "picopickle-core" % "0.2.1",
-      "io.github.netvl.picopickle" %% "picopickle-backend-jawn" % "0.2.1",
-      "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
-      compilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
-    )
-  )
-  .enablePlugins(JmhPlugin)
-  .dependsOn(core, generic, jawn)
 
 lazy val publishSettings = Seq(
   releaseCrossBuild := true,
